@@ -1,0 +1,145 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+
+/* Custom */
+
+/* custom inclusion of right, left and below tabs */
+
+.tabs-below > .nav-tabs,
+.tabs-right > .nav-tabs,
+.tabs-left > .nav-tabs {
+    border-bottom: 0;
+}
+
+.tab-content > .tab-pane {
+    display: none;
+}
+
+.viewer-frame {
+    padding: 10px;
+    border: solid 2px #878787;
+    height: 600px;
+}
+
+.viewer-box {
+    padding: 5px;
+    margin: 5px;
+}
+
+.tab-content {
+    display: block;
+    border-left: solid 1px #CCCCCC;
+    border-right: solid 1px #CCCCCC;
+    border-top: solid 1px #CCCCCC;
+    padding: 5px;
+    height: 510px;
+}
+
+    .tab-content > .active {
+        display: block;
+        padding: 10px 15px 20px 15px;
+        overflow: auto;
+        height: 100%;
+    }
+
+.tabs-below > .nav-tabs {
+    border-top: 1px solid #ddd;
+}
+
+    .tabs-below > .nav-tabs > li {
+        margin-top: -1px;
+        margin-bottom: 0;
+    }
+
+        .tabs-below > .nav-tabs > li > a {
+            -webkit-border-radius: 0 0 4px 4px;
+            -moz-border-radius: 0 0 4px 4px;
+            border-radius: 0 0 4px 4px;
+            display: block;
+            padding: 0 10px 5px 10px;
+            color: #999999;
+            background-color: #E0E0E0;
+            text-decoration: none;
+            border: solid 1px #CCCCCC;
+        }
+
+            .tabs-below > .nav-tabs > li > a.active {
+                border-bottom: solid 1px #CCCCCC;
+                border-left: solid 1px #CCCCCC;
+                border-right: solid 1px #CCCCCC;
+                border-top: solid 1px #FFFFFF;
+                color: #333333;
+                font-weight: bold;
+                background-color: #FFFFFF;
+                text-decoration: none;
+            }
+
+    .tabs-below > .nav-tabs > .active > a,
+    .tabs-below > .nav-tabs > .active > a:hover,
+    .tabs-below > .nav-tabs > .active > a:focus {
+        border-color: transparent #ddd #ddd #ddd;
+    }
+
+.viewer-box table {
+    border: solid 2px #CCCCCC;
+    width: 100%;
+}
+
+    .viewer-box table th {
+        border: solid 1px #CCCCCC;
+        border-collapse: collapse;
+        background-color: #EEEEEE;
+        text-align: center;
+        font-weight: normal;
+    }
+
+    .viewer-box table .rownumber {
+        max-width: 50px;
+        width: 30px;
+    }
+
+    .viewer-box table td {
+        border: solid 1px #CCCCCC;
+        border-collapse: collapse;
+    }
+
+.watermark {
+    position: absolute;
+    opacity: 0.1;
+    z-index: -999;
+    background-image: url('images/watermark.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    height: 287px;
+    width: 174px;
+    top: 40%;
+    left: 40%;
+}
+
+.select-excel-file {
+    max-width: 600px;
+}

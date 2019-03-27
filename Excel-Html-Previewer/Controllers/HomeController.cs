@@ -10,68 +10,75 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Excel_Html_Previewer.Helper;
+using System.Text.RegularExpressions;
+using HtmlAgilityPack;
+using System.Text;
 
 namespace Excel_Html_Previewer.Controllers
 {
     public class HomeController : Controller
     {
+        /// <summary>
+        /// 首頁
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult Index(FormCollection form)
         {
             return View();
         }
 
+        /// <summary>
+        /// 讀取XLS與XLSX格式並以HTML方式顯示
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult PreviewerForExcel(FormCollection form)
         {
             VmPreviewerForExcel ViewModel = new VmPreviewerForExcel();
-            string TargetFileName = (!string.IsNullOrEmpty(form["select-excel-file"])) ? form["select-excel-file"] : string.Empty;
+            ConvertService ConvertServ = new ConvertService();
 
-            List<string> TargetFileList = Directory.GetFiles(Server.MapPath(GlobalVars.LOADING_FILES), "*.xls*",
-            SearchOption.AllDirectories).ToList();
-            Dictionary<string, string> TargetFileDict = TargetFileList.ToDictionary(x => Path.GetFileName(x), x => x);
-            foreach (KeyValuePair<string, string> kv in TargetFileDict)
-            {
-                SelectListItem Item = new SelectListItem();
-                Item.Text = kv.Key;
-                Item.Value = kv.Key;
-                Item.Selected = (kv.Key == TargetFileName);
-                ViewModel.FileSelectList.Add(Item);
-            }
+            //掃描目標資料夾並取出列表放在下拉式選單中
+            string SelectedItem = (!string.IsNullOrEmpty(form["select-file-or-directory"])) ? Path.GetFileName(form["select-file-or-directory"]) : string.Empty;
+            ViewModel.FileSelectList = ConvertServ.GetSelectList(GlobalVars.LOADING_FILES_EXCEL, "*.xls*", SearchOption.AllDirectories);
 
-            if (this.Request.RequestType == "POST" && !string.IsNullOrEmpty(TargetFileName))
+            //取得索引並轉換目標檔案
+            if (Request.RequestType == "POST" && !string.IsNullOrEmpty(SelectedItem))
             {
-                ConvertService ConvertServ = new ConvertService();
-                string XmlPath = TargetFileDict[TargetFileName];
-                ViewModel.SheetList = ConvertServ.ExcelToHtmlByNPOI(XmlPath);
+                ViewModel.FileSelectList.Find(x => x.Text == SelectedItem).Selected = true;
+
+                string ConvertPath = ViewModel.FileSelectList.Single(x => x.Text == SelectedItem).Value;
+                ViewModel.SheetList = ConvertServ.GetObjectFromExcelFile(ConvertPath);
             }
 
             return View(ViewModel);
         }
 
+        /// <summary>
+        /// 讀取純HTML包並無損顯示於模擬框架中
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult PreviewerForHtmlPack(FormCollection form)
         {
-            VmPreviewerForExcel ViewModel = new VmPreviewerForExcel();
-            string TargetFileName = (!string.IsNullOrEmpty(form["select-excel-file"])) ? form["select-excel-file"] : string.Empty;
+            VmPreviewerForHtmlPack ViewModel = new VmPreviewerForHtmlPack();
+            ConvertService ConvertServ = new ConvertService();
 
-            List<string> TargetFileList = Directory.GetFiles(Server.MapPath(GlobalVars.LOADING_FILES), "*.xls*",
-            SearchOption.AllDirectories).ToList();
-            Dictionary<string, string> TargetFileDict = TargetFileList.ToDictionary(x => Path.GetFileName(x), x => x);
-            foreach (KeyValuePair<string, string> kv in TargetFileDict)
-            {
-                SelectListItem Item = new SelectListItem();
-                Item.Text = kv.Key;
-                Item.Value = kv.Key;
-                Item.Selected = (kv.Key == TargetFileName);
-                ViewModel.FileSelectList.Add(Item);
-            }
+            //掃描目標資料夾並取出列表放在下拉式選單中
+            string SelectedItem = (!string.IsNullOrEmpty(form["select-file-or-directory"])) ? Path.GetFileName(form["select-file-or-directory"]) : string.Empty;
+            ViewModel.FileSelectList = ConvertServ.GetSelectList(GlobalVars.LOADING_FILES_HTMLPACK, "*", SearchOption.TopDirectoryOnly, true);
 
-            if (this.Request.RequestType == "POST" && !string.IsNullOrEmpty(TargetFileName))
+            //取得索引並轉換目標檔案
+            if (Request.RequestType == "POST" && !string.IsNullOrEmpty(SelectedItem))
             {
-                ConvertService ConvertServ = new ConvertService();
-                string XmlPath = TargetFileDict[TargetFileName];
-                ViewModel.SheetList = ConvertServ.ExcelToHtmlByNPOI(XmlPath);
+                ViewModel.FileSelectList.Find(x => x.Text == SelectedItem).Selected = true;
+
+                string ConvertPath = ViewModel.FileSelectList.Single(x => x.Text == SelectedItem).Value;
+                ViewModel.CssContent = ConvertServ.GetNewHtmlPackCssContent(ConvertPath);
+                ViewModel.SheetList = ConvertServ.GetObjectFromHtmlPack(ConvertPath);
             }
 
             return View(ViewModel);

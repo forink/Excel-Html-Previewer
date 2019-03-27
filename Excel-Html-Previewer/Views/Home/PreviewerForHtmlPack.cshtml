@@ -1,10 +1,15 @@
-﻿@model Excel_Html_Previewer.ViewModels.VmPreviewerForExcel
+﻿@model Excel_Html_Previewer.ViewModels.VmPreviewerForHtmlPack
 
 @{
     ViewBag.Title = "PreviewerForHtmlPack";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section css
+{
+    <style type="text/css">
+    @Html.Raw(Model.CssContent)
+    </style>
+}
 <div class="form-group">
     <h3>@ViewBag.Title</h3>
 </div>
@@ -14,18 +19,18 @@
     <div class="form-group">
         <div class="form-inline">
             請選擇檔案：
-            @Html.DropDownList("select-excel-file", Model.FileSelectList, "-- 請選擇 --", new { @id = "select-excel-file", @Class = "form-control select-excel-file" })
+            @Html.DropDownList("select-file-or-directory", Model.FileSelectList, "-- 請選擇 --", new { @id = "select-file-or-directory", @Class = "form-control select-file-or-directory" })
         </div>
     </div>
-    <div class="viewer-frame">
-        <div class="viewer-box">
-            <div class="tabbable tabs-below">
+    <div id="viewer-frame" class="viewer-frame">
+        <div id="viewer-box" class="viewer-box">
+            <div id="tab-box" class="tabbable tabs-below">
                 <div class="tab-content">
                     <div class="watermark"></div>
                     @foreach (var s in Model.SheetList)
                     {
                         string CssClass = (s.Sn == 1) ? "active" : string.Empty;
-                        <div class="tab-pane @CssClass" id="tab_@s.Sn">@Html.Raw(s.Content)</div>
+                        <div class="tab-pane sheet-box @CssClass" id="tab_@s.Sn">@Html.Raw(s.Content)</div>
                     }
                 </div>
                 <ul class="nav nav-tabs">
@@ -45,7 +50,7 @@
 
         $(document).ready(function () {
 
-            $('#select-excel-file').change(function () {
+            $('#select-file-or-directory').change(function () {
                 this.form.submit();
             });
 

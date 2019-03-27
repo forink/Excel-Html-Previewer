@@ -9,9 +9,14 @@ namespace Excel_Html_Previewer.Helper
     public static class GlobalVars
     {
         /// <summary>
-        /// 讀檔來源路徑
+        /// 讀檔來源路徑 (Excel Files)
         /// </summary>
-        public static string LOADING_FILES { set; get; }
+        public static string LOADING_FILES_EXCEL { set; get; }
+
+        /// <summary>
+        /// 讀檔來源路徑 (Html Pack Files)
+        /// </summary>
+        public static string LOADING_FILES_HTMLPACK { set; get; }
 
         /// <summary>
         /// 建構式
@@ -20,7 +25,8 @@ namespace Excel_Html_Previewer.Helper
         {
             try
             {
-                LOADING_FILES = ConfigurationManager.AppSettings["LOADING_FILES"].Trim();
+                LOADING_FILES_EXCEL = ConfigurationManager.AppSettings["LOADING_FILES_EXCEL"].Trim();
+                LOADING_FILES_HTMLPACK = ConfigurationManager.AppSettings["LOADING_FILES_HTMLPACK"].Trim();
             }
             catch (Exception ex)
             {

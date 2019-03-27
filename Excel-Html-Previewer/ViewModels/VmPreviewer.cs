@@ -22,5 +22,13 @@ namespace Excel_Html_Previewer.ViewModels
 
     public class VmPreviewerForExcel : VmPreviewer { }
 
-    public class VmPreviewerForHtmlPack : VmPreviewer { }
+    public class VmPreviewerForHtmlPack : VmPreviewer
+    {
+        public string CssContent { get; set; }
+
+        public VmPreviewerForHtmlPack() : base()
+        {
+            CssContent = string.Empty;
+        }
+    }
 }

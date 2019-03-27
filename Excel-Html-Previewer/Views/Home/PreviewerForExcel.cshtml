@@ -14,7 +14,7 @@
     <div class="form-group">
         <div class="form-inline">
             請選擇檔案：
-            @Html.DropDownList("select-excel-file", Model.FileSelectList, "-- 請選擇 --", new { @id = "select-excel-file", @Class = "form-control select-excel-file" })
+            @Html.DropDownList("select-file-or-directory", Model.FileSelectList, "-- 請選擇 --", new { @id = "select-file-or-directory", @Class = "form-control select-file-or-directory" })
         </div>
     </div>
     <div class="viewer-frame">
@@ -45,7 +45,7 @@
 
         $(document).ready(function () {
 
-            $('#select-excel-file').change(function () {
+            $('#select-file-or-directory').change(function () {
                 this.form.submit();
             });
 

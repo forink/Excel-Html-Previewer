@@ -1,0 +1,55 @@
+﻿@model Excel_Html_Previewer.ViewModels.VmPreviewerForExcel
+
+@{
+    ViewBag.Title = "PreviewerForHtmlPack";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-group">
+    <h3>@ViewBag.Title</h3>
+</div>
+<hr />
+@using (Html.BeginForm())
+            {
+    <div class="form-group">
+        <div class="form-inline">
+            請選擇檔案：
+            @Html.DropDownList("select-excel-file", Model.FileSelectList, "-- 請選擇 --", new { @id = "select-excel-file", @Class = "form-control select-excel-file" })
+        </div>
+    </div>
+    <div class="viewer-frame">
+        <div class="viewer-box">
+            <div class="tabbable tabs-below">
+                <div class="tab-content">
+                    <div class="watermark"></div>
+                    @foreach (var s in Model.SheetList)
+                    {
+                        string CssClass = (s.Sn == 1) ? "active" : string.Empty;
+                        <div class="tab-pane @CssClass" id="tab_@s.Sn">@Html.Raw(s.Content)</div>
+                    }
+                </div>
+                <ul class="nav nav-tabs">
+                    @foreach (var s in Model.SheetList)
+                    {
+                        string CssClass = (s.Sn == 1) ? "active show" : string.Empty;
+                        <li><a class="@CssClass" href="#tab_@s.Sn" data-toggle="tab">@s.TabTitle</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+@section scripts
+{
+    <script language="javascript">
+
+        $(document).ready(function () {
+
+            $('#select-excel-file').change(function () {
+                this.form.submit();
+            });
+
+        });
+
+    </script>
+}

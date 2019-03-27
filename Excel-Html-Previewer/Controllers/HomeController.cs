@@ -18,25 +18,59 @@ namespace Excel_Html_Previewer.Controllers
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult Index(FormCollection form)
         {
-            VM_ExcelPreviewer ViewModel = new VM_ExcelPreviewer();
-            string XlsFileName = (!string.IsNullOrEmpty(form["select-excel-file"])) ? form["select-excel-file"] : string.Empty;
+            return View();
+        }
 
-            List<string> XlsList = Directory.GetFiles(Server.MapPath(GlobalVars.LOADING_FILES), "*.xls*",
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult PreviewerForExcel(FormCollection form)
+        {
+            VmPreviewerForExcel ViewModel = new VmPreviewerForExcel();
+            string TargetFileName = (!string.IsNullOrEmpty(form["select-excel-file"])) ? form["select-excel-file"] : string.Empty;
+
+            List<string> TargetFileList = Directory.GetFiles(Server.MapPath(GlobalVars.LOADING_FILES), "*.xls*",
             SearchOption.AllDirectories).ToList();
-            Dictionary<string, string> XlsDict = XlsList.ToDictionary(x => Path.GetFileName(x), x => x);
-            foreach (KeyValuePair<string, string> kv in XlsDict)
+            Dictionary<string, string> TargetFileDict = TargetFileList.ToDictionary(x => Path.GetFileName(x), x => x);
+            foreach (KeyValuePair<string, string> kv in TargetFileDict)
             {
                 SelectListItem Item = new SelectListItem();
                 Item.Text = kv.Key;
                 Item.Value = kv.Key;
-                Item.Selected = (kv.Key == XlsFileName);
-                ViewModel.XlsSelectList.Add(Item);
+                Item.Selected = (kv.Key == TargetFileName);
+                ViewModel.FileSelectList.Add(Item);
             }
 
-            if (this.Request.RequestType == "POST" && !string.IsNullOrEmpty(XlsFileName))
+            if (this.Request.RequestType == "POST" && !string.IsNullOrEmpty(TargetFileName))
             {
                 ConvertService ConvertServ = new ConvertService();
-                string XmlPath = XlsDict[XlsFileName];
+                string XmlPath = TargetFileDict[TargetFileName];
+                ViewModel.SheetList = ConvertServ.ExcelToHtmlByNPOI(XmlPath);
+            }
+
+            return View(ViewModel);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult PreviewerForHtmlPack(FormCollection form)
+        {
+            VmPreviewerForExcel ViewModel = new VmPreviewerForExcel();
+            string TargetFileName = (!string.IsNullOrEmpty(form["select-excel-file"])) ? form["select-excel-file"] : string.Empty;
+
+            List<string> TargetFileList = Directory.GetFiles(Server.MapPath(GlobalVars.LOADING_FILES), "*.xls*",
+            SearchOption.AllDirectories).ToList();
+            Dictionary<string, string> TargetFileDict = TargetFileList.ToDictionary(x => Path.GetFileName(x), x => x);
+            foreach (KeyValuePair<string, string> kv in TargetFileDict)
+            {
+                SelectListItem Item = new SelectListItem();
+                Item.Text = kv.Key;
+                Item.Value = kv.Key;
+                Item.Selected = (kv.Key == TargetFileName);
+                ViewModel.FileSelectList.Add(Item);
+            }
+
+            if (this.Request.RequestType == "POST" && !string.IsNullOrEmpty(TargetFileName))
+            {
+                ConvertService ConvertServ = new ConvertService();
+                string XmlPath = TargetFileDict[TargetFileName];
                 ViewModel.SheetList = ConvertServ.ExcelToHtmlByNPOI(XmlPath);
             }
 

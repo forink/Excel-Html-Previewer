@@ -1,72 +1,20 @@
-﻿@model Excel_Html_Previewer.ViewModels.VM_ExcelPreviewer
-
-@{
-    Layout = null;
-    ViewBag.Title = "Excel Previewer";
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>ExcelPreviewer</title>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" />
-</head>
-<body>
-    <div class="container">
-        <div class="form-group">
-            <h3>@ViewBag.Title</h3>
-        </div>
-        <hr />
-        @using (Html.BeginForm())
-            {
-            <div class="form-group">
-                <div class="form-inline">
-                    請選擇檔案：
-                    @Html.DropDownList("select-excel-file", Model.XlsSelectList, "-- 請選擇 --", new { @id = "select-excel-file", @Class = "form-control select-excel-file" })
-                </div>
-            </div>
-            <div class="viewer-frame">
-                <div class="viewer-box">
-                    <div class="tabbable tabs-below">
-                        <div class="tab-content">
-                            <div class="watermark"></div>
-                            @foreach (var s in Model.SheetList)
-                            {
-                                string CssClass = (s.Sn == 1) ? "active" : string.Empty;
-                                <div class="tab-pane @CssClass" id="tab_@s.Sn">@Html.Raw(s.Content)</div>
-                            }
-                        </div>
-                        <ul class="nav nav-tabs">
-                            @foreach (var s in Model.SheetList)
-                            {
-                                string CssClass = (s.Sn == 1) ? "active show" : string.Empty;
-                                <li><a class="@CssClass" href="#tab_@s.Sn" data-toggle="tab">@s.TabTitle</a></li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        }
+<div class="container">
+    <div class="form-group">
+        <h3>@ViewBag.Title</h3>
     </div>
-    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script src="~/Scripts/jquery-3.3.1.slim.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/popper.min.js"></script>
-    <script language="javascript">
 
-        $(document).ready(function () {
+    <ul>
+        <li><a href="~/Home/PreviewerForExcel" target="_blank">The Previewer For Excel</a></li>
+        <li><a href="~/Home/PreviewerForHtmlPack" target="_blank">The Previewer For Html Pack</a></li>
+    </ul>
+</div>
 
-            $('#select-excel-file').change(function () {
-                this.form.submit();
-            });
+@section scripts
+{
 
-        });
-
-    </script>
-</body>
-</html>
+}

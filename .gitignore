@@ -5,6 +5,7 @@ Excel-Html-Previewer/obj/*
 Excel-Html-Previewer/obj/Debug/
 Excel-Html-Previewer/obj/Debug/*
 Excel-Html-Previewer/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+Excel-Html-Previewer/LoadingHtmlPacks/*
 
 Excel-Html-Previewer.Tests/bin/Debug/
 Excel-Html-Previewer.Tests/bin/Debug/*

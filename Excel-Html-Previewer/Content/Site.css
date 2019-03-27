@@ -143,3 +143,7 @@ textarea {
 .select-excel-file {
     max-width: 600px;
 }
+
+.page-body {
+    margin-top: 45px;
+}

@@ -7,16 +7,20 @@ using System.Web.Mvc;
 
 namespace Excel_Html_Previewer.ViewModels
 {
-    public class VM_ExcelPreviewer
+    public abstract class VmPreviewer
     {
-        public List<SelectListItem> XlsSelectList { get; set; }
+        public List<SelectListItem> FileSelectList { get; set; }
 
         public List<ExcelSheetHtml> SheetList { set; get; }
 
-        public VM_ExcelPreviewer()
+        public VmPreviewer()
         {
-            XlsSelectList = new List<SelectListItem>();
+            FileSelectList = new List<SelectListItem>();
             SheetList = new List<ExcelSheetHtml>();
         }
     }
+
+    public class VmPreviewerForExcel : VmPreviewer { }
+
+    public class VmPreviewerForHtmlPack : VmPreviewer { }
 }

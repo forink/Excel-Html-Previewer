@@ -119,12 +119,18 @@ namespace Excel_Html_Previewer.Services
         public string GetNewHtmlPackCssContent(string targetPath)
         {
             //取得CSS的內容
-            string CssContent = System.IO.File.ReadAllText(string.Format(@"{0}\\{1}.files\\stylesheet.css", targetPath, Path.GetFileName(targetPath)));
+            string CssContent = File.ReadAllText(string.Format(@"{0}\\{1}.files\\stylesheet.css",
+                targetPath,
+                Path.GetFileName(targetPath)), Encoding.Default);
+
             MatchCollection MatchCss = Regex.Matches(CssContent, @"[^}]?([^{]*{[^}]*})", RegexOptions.Multiline);
             StringBuilder NewCssBuilder = new StringBuilder();
             foreach (Match m in MatchCss)
             {
-                NewCssBuilder.Append("\n #viewer-frame>#viewer-box>#tab-box .sheet-box ").Append(m.Value);
+                NewCssBuilder.Append("\n ")
+                    .Append(GlobalVars.CSS_OVERRIDE_PATTERN)
+                    .Append(" ")
+                    .Append(m.Value);
             }
             return NewCssBuilder.ToString();
         }
@@ -133,17 +139,17 @@ namespace Excel_Html_Previewer.Services
         /// 取得目標資料夾要預覽內容的檔案或資料夾清單
         /// </summary>
         /// <param name="targetPath">目標資料夾路徑</param>
-        /// <param name="searchPatten">尋檔規則</param>
+        /// <param name="searchPattern">尋檔規則</param>
         /// <param name="searchOption">搜尋選項</param>
         /// <param name="byDirectory">True:資料夾模式/False:檔案模式(Default)</param>
         /// <returns></returns>
-        public List<SelectListItem> GetSelectList(string targetPath, string searchPatten, SearchOption searchOption, bool byDirectory = false)
+        public List<SelectListItem> GetSelectList(string targetPath, string searchPattern, SearchOption searchOption, bool byDirectory = false)
         {
             List<SelectListItem> SelectList = new List<SelectListItem>();
             string FilePath = Regex.IsMatch(targetPath, @"^(?:[a-zA-Z]:(?:\\|/)|\\\\)") ? targetPath : HttpContext.Current.Server.MapPath(targetPath);
 
-            List<string> TargetFileList = (byDirectory) ? Directory.GetDirectories(FilePath, searchPatten, searchOption).ToList()
-                : Directory.GetFiles(FilePath, searchPatten, searchOption).ToList();
+            List<string> TargetFileList = (byDirectory) ? Directory.GetDirectories(FilePath, searchPattern, searchOption).ToList()
+                : Directory.GetFiles(FilePath, searchPattern, searchOption).ToList();
             Dictionary<string, string> TargetFileDict = TargetFileList.ToDictionary(x => Path.GetFileName(x), x => x);
 
             foreach (KeyValuePair<string, string> kv in TargetFileDict)

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 
 namespace Excel_Html_Previewer.Helper
 {
@@ -23,6 +20,10 @@ namespace Excel_Html_Previewer.Helper
         /// </summary>
         public static string CSS_OVERRIDE_PATTERN { set; get; }
 
+        public static string TEST_LOGIN_USERID { set; get; }
+
+        public static string TEST_LOGIN_PASSWORD { set; get; }
+
         /// <summary>
         /// 建構式
         /// </summary>
@@ -33,7 +34,8 @@ namespace Excel_Html_Previewer.Helper
                 LOADING_FILES_EXCEL = ConfigurationManager.AppSettings["LOADING_FILES_EXCEL"].Trim();
                 LOADING_FILES_HTMLPACK = ConfigurationManager.AppSettings["LOADING_FILES_HTMLPACK"].Trim();
                 CSS_OVERRIDE_PATTERN = ConfigurationManager.AppSettings["CSS_OVERRIDE_PATTERN"].Trim();
-
+                TEST_LOGIN_USERID = ConfigurationManager.AppSettings["TEST_LOGIN_USERID"].Trim();
+                TEST_LOGIN_PASSWORD = ConfigurationManager.AppSettings["TEST_LOGIN_PASSWORD"].Trim();
             }
             catch (Exception ex)
             {

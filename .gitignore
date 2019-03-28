@@ -30,3 +30,5 @@ Excel-Html-Previewer.Tests/obj/*
 
 *.xls
 *.xlsx
+*.pubxml
+*.pubxml.user

@@ -1,20 +1,18 @@
-﻿using NPOI.HSSF.UserModel;
+﻿using Excel_Html_Previewer.Helper;
+using Excel_Html_Previewer.Models;
+using HtmlAgilityPack;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.Converter;
-using System;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
-using System.Xml;
-using Excel_Html_Previewer.ViewModels;
-using Excel_Html_Previewer.Models;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
-using System.Text.RegularExpressions;
 using System.Text;
-using HtmlAgilityPack;
+using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
-using Excel_Html_Previewer.Helper;
+using System.Xml;
 
 namespace Excel_Html_Previewer.Services
 {

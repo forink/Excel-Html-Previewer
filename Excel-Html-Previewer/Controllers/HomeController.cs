@@ -1,28 +1,58 @@
-﻿using Excel_Html_Previewer.Models;
+﻿using Excel_Html_Previewer.Helper;
 using Excel_Html_Previewer.Services;
 using Excel_Html_Previewer.ViewModels;
-using NPOI.HSSF.UserModel;
-using NPOI.SS.Converter;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Excel_Html_Previewer.Helper;
-using System.Text.RegularExpressions;
-using HtmlAgilityPack;
-using System.Text;
+using System.Web.Security;
 
 namespace Excel_Html_Previewer.Controllers
 {
     public class HomeController : Controller
     {
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 用於測試用的極簡登入驗證
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Login(string userId, string password)
+        {
+            if (!userId.Equals(GlobalVars.TEST_LOGIN_USERID) || !password.Equals(GlobalVars.TEST_LOGIN_PASSWORD))
+            {
+                TempData["Error"] = "您輸入的帳號不存在或者密碼錯誤!";
+                return View();
+            }
+
+            // 登入時清空所有 Session 資料
+            Session.RemoveAll();
+
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
+              "test", DateTime.Now, DateTime.Now.AddMinutes(30), false, "",
+              FormsAuthentication.FormsCookiePath);
+
+            string encTicket = FormsAuthentication.Encrypt(ticket);
+
+            Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
+
+            return RedirectToAction("Index", "Home");
+
+        }
+
         /// <summary>
         /// 首頁
         /// </summary>
         /// <param name="form"></param>
         /// <returns></returns>
+        [Authorize]
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult Index(FormCollection form)
         {
@@ -34,6 +64,7 @@ namespace Excel_Html_Previewer.Controllers
         /// </summary>
         /// <param name="form"></param>
         /// <returns></returns>
+        [Authorize]
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult PreviewerForExcel(FormCollection form)
         {
@@ -61,6 +92,7 @@ namespace Excel_Html_Previewer.Controllers
         /// </summary>
         /// <param name="form"></param>
         /// <returns></returns>
+        [Authorize]
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult PreviewerForHtmlPack(FormCollection form)
         {

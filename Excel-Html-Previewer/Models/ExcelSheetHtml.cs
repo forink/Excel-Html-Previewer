@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Excel_Html_Previewer.Models
+﻿namespace Excel_Html_Previewer.Models
 {
     public class ExcelSheetHtml
     {

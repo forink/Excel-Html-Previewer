@@ -2,7 +2,8 @@
 
 Excel-Html-Previewer is developed in C#.
 
-Use the NPOI library to read Excel files and display it on the web page.
+A. Use the NPOI library to read Excel files and display it on the web page.
+B. Read the html pack files from excel and show on the view.
 
 The default id and password are both "test"
 
